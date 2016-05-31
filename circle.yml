@@ -1,0 +1,17 @@
+machine:
+  python:
+    version: 3.5.0
+
+dependencies:
+  override:
+    - pip install --upgrade pip
+    - pip install pylint
+    - pip install --upgrade git+https://github.com/ricohapi/auth-py.git
+    - python setup.py install
+
+test:
+  override:
+    - pylint ricohapi
+    - pylint -dR0801 samples/*.py
+    - pylint test/*.py
+    - python setup.py test

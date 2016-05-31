@@ -1,0 +1,7 @@
+{
+  "USER": "set_your_user_id",
+  "PASS": "set_your_user_pass",
+  "CLIENT_ID": "set_your_client_id",
+  "CLIENT_SECRET": "set_your_client_secret",
+  "CA_CERTS": "path to the ca certificate file"
+}
