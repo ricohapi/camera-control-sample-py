@@ -28,6 +28,7 @@ from __future__ import (absolute_import, division, print_function,
                         unicode_literals)
 import sys
 import json
+import time
 import getopt
 from logging import getLogger, NullHandler, StreamHandler #pylint: disable=unused-import
 from logging import DEBUG, INFO #pylint: disable=unused-import
@@ -119,15 +120,18 @@ def still_picture(iso=None, s_speed=None):
 
     iso, s_speed = validate_iso_and_shutter(iso, s_speed)
 
-    options = {'exposureProgram': exp_program.get(exp_mode, 2),
-               'captureMode': 'image'}
+    theta = ThetaV2()
+
+    options = {'captureMode': 'image'}
+    theta.set_options(**options)
+
+    options = {'exposureProgram': exp_program.get(exp_mode, 2)}
 
     if not iso is None:
         options.update({'iso': iso})
     if not s_speed is None:
         options.update({'shutterSpeed': s_speed})
 
-    theta = ThetaV2()
     theta.set_options(**options)
     theta.take_picture()
 
@@ -164,6 +168,15 @@ def wait_key():
         key_wait = input #python3
 
     _ = key_wait()
+
+def wait_keyborad_interrupt():
+    """return if Ctr+C is input."""
+    LOG.info('hit Ctr+C to quit.')
+    while True:
+        try:
+            time.sleep(1)
+        except KeyboardInterrupt:
+            break
 
 def on_receive(devid, cmd, rcv_param, fun_param):
     """Called back when a camera control message is received.

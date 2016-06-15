@@ -5,7 +5,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='ricohapi-cameractl',
-    version='1.0.0',
+    version='1.1.0',
     description='Ricoh-camera-control-sample for Python',
     long_description="""Ricoh Camera Control Sample for Python""",
     author='Ricoh',

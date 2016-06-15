@@ -43,7 +43,7 @@ class CamTopic(Topic):
         if device_id is None:
             return False
 
-        acceptable = '[A-Za-z0-9_]{1,32}'
+        acceptable = r'\A[A-Za-z0-9_]{1,32}\Z'
         try:
             match = re.match(acceptable, device_id)
             if match is None:
@@ -90,7 +90,7 @@ class Client(MQTTClient): #pylint: disable=too-many-instance-attributes
     """
     def __init__(self, client_id, client_secret):
         super(Client, self).__init__(client_id, client_secret)
-        self.__listened = False
+        self.__listening = False
         self.__sub_dev_id = None
         self.__func = None
         self.__args = ()
@@ -105,7 +105,7 @@ class Client(MQTTClient): #pylint: disable=too-many-instance-attributes
         :param tuple fargs: func argument
         """
 
-        if self.__listened:
+        if self.__listening:
             raise ClientError('already listened. If you want to change device to listen, '
                               'you should call unlisten().')
         if not self.__sub_dev_id is None:
@@ -123,12 +123,12 @@ class Client(MQTTClient): #pylint: disable=too-many-instance-attributes
             raise ClientError
         except:
             raise
-        self.__listened = True
+        self.__listening = True
 
     def unlisten(self):
         """Unlisten to the camera control message that is already listened.
         """
-        if not self.__listened:
+        if not self.__listening:
             LOG.warning('No device is listened. Do nothing.')
             return
 
@@ -139,7 +139,7 @@ class Client(MQTTClient): #pylint: disable=too-many-instance-attributes
         except:
             raise
         self.__sub_dev_id = None
-        self.__listened = False
+        self.__listening = False
 
     def shoot(self, device_id, param=None):
         """Send a shooting message to your device specified by the device_id.

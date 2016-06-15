@@ -105,7 +105,7 @@ class TestRemoteControl(object):
         camera._Client__sub_dev_id = 'INVLID_DEVID_+'
         assert_raises(ClientError, camera.listen, 'DEVTEST', func=None, fargs=None)
 
-        camera._Client__listened = True
+        camera._Client__listening = True
         assert_raises(ClientError, camera.listen, 'DEVTEST', func=None, fargs=None)
 
     @staticmethod
@@ -115,7 +115,7 @@ class TestRemoteControl(object):
         with MQTTClient(client_id, client_secret) as mqtt:
             mqtt._MQTTClient__mqtt = object()
             mqtt._MQTTClient__connected = True
-            mqtt._MQTTClient__listened = True
+            mqtt._MQTTClient__listening = True
             mqtt.disconnect()
 
     @staticmethod
@@ -131,7 +131,7 @@ class TestRemoteControl(object):
         camera = Client(client_id, client_secret)
         eq_(None, camera.unlisten())
 
-        camera._Client__listened = True
+        camera._Client__listening = True
         assert_raises(ClientError, camera.unlisten)
 
 

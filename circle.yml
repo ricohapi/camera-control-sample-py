@@ -7,6 +7,7 @@ dependencies:
     - pip install --upgrade pip
     - pip install pylint
     - pip install --upgrade git+https://github.com/ricohapi/auth-py.git
+    - pip install --upgrade git+https://github.com/ricohapi/media-storage-py.git
     - python setup.py install
 
 test:

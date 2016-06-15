@@ -95,7 +95,7 @@ class MQTTClient(object): #pylint: disable=too-many-instance-attributes
         self.__sub_topic = None
         self.__mqtt = None
         self.__connected = False
-        self.__listened = False
+        self.__listening = False
         self.__client = {'id': client_id, 'secret': client_secret}
         self.__func = None
         self.__args = ()
@@ -149,7 +149,7 @@ class MQTTClient(object): #pylint: disable=too-many-instance-attributes
             LOG.warning('No client is connected to the server.')
             return
 
-        if self.__listened:
+        if self.__listening:
             self.unsubscribe()
 
         if isinstance(self.__mqtt, mqtt.Client):
@@ -170,7 +170,7 @@ class MQTTClient(object): #pylint: disable=too-many-instance-attributes
         if (self.__mqtt is None) or (not self.__connected):
             raise MQTTClientError('connect to the server before calling subscribe()')
 
-        if self.__listened:
+        if self.__listening:
             LOG.warning('already listened. Do nothing.')
             return
 
@@ -179,7 +179,7 @@ class MQTTClient(object): #pylint: disable=too-many-instance-attributes
         self.__mqtt.on_message = self.__on_message
         self.__sub_topic = self.__topic.topic(self.__uid, topic)
         self.__subscribe(self.__sub_topic)
-        self.__listened = True
+        self.__listening = True
 
     def unsubscribe(self):
         """Unsubscribe a topic which is already subscribed to.
@@ -187,19 +187,19 @@ class MQTTClient(object): #pylint: disable=too-many-instance-attributes
         if self.__mqtt is None:
             raise MQTTClientError('mqtt client is not initialized.')
 
-        if not self.__listened:
+        if not self.__listening:
             LOG.warning('No device is subscribed. Do nothing.')
 
         if isinstance(self.__mqtt, mqtt.Client):
             self.__mqtt.unsubscribe(self.__sub_topic)
             self.__sub_topic = None
-            self.__listened = False
+            self.__listening = False
 
     def publish(self, topic, message=None):
         """Send a message from the client to the server.
 
-        :param str device_id: a device id to which you want to send a message.
-        :message dict param: user specified message.
+        topic: the topic to be published on.
+        message: the message to send.
         """
 
         if not self.__connected:
