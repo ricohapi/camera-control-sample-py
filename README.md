@@ -16,12 +16,13 @@ If you don't have them, please register yourself and your client from [THETA Dev
 
 ```sh
 pip install --upgrade git+https://github.com/ricohapi/auth-py.git
+pip install --upgrade git+https://github.com/ricohapi/media-storage-py.git
 git clone https://github.com/ricohapi/camera-control-sample-py.git
 ```
 
 In your downloaded directory,
 ```sh
-python setup.py install
+pip install .
 ```
 
 ### Download Intermediate CA Certificate
